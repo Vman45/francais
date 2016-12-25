@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<script src="/verbs.js"></script>
+<script src="/jquery-3.1.1.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap-theme.css">
+<script src="./bootstrap/dist/js/bootstrap.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./styles/select2.css">
+<script src="./scripts/select2.full.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./styles/general.css">
+<script src="./scripts/general.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./styles/custom-checkbox.css">
+
+<style>
+
+* {
+        margin: 0;
+        padding: 0;
+}
+
+html, body, .main {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+}
+
+.main {
+	display: table;
+	text-align: center;
+}
+
+.body-wrap {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: left;
+	max-width: 600px;
+	margin: auto;
+}
+
+.checkbox-custom-label {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 75%;
+}
+
+.checkbox-custom-label-stu {
+        width: 30%;
+        margin-left: 5%;
+        font-weight: normal;
+}
+
+.slider-li h5 {
+        font-size: 16px;
+        word-wrap: break-word;
+}
+
+#verbcont {
+        min-height: 483px;
+        max-height: 483px;
+}
+
+.checkbox-custom {
+        display: none;
+}
+
+.verbs-wrap {
+	
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="main">
+	<div class="body-wrap">
+		<div class="verbs-wrap container">
+			<div class="input-group searchbar">
+        	        	<input id="verbsearch" type="text" class="form-control" placeholder="Search" oninput="searchVerbs();">
+                	</div>
+	                <div class="row" style="margin-left: 19px; margin-top: 10px; margin-bottom: 5px;">
+        	        	<div class="col-xs-5" style="padding:0">
+                	        	<input onchange="allVerbs()" type="checkbox" class="checkbox-custom" id="checkallverbs">
+                        	        <label for="checkallverbs" class="checkbox-custom-label" style="width:100%;">All Verbs</label>
+	                        </div>
+        	        </div>
+			<div class="slider-top-divider"></div>
+
+			<ul class="slider-container-fixed" id="vcont">
+        			<li id="vsearchres" class="noschool" style="display:none;">No results found</li>
+                		<li class="slider-li">
+                        		<input type="checkbox" class="checkbox-custom">
+	                		<label class="checkbox-custom-label">Etre</label>
+	        	        </li>
+     				<li class="divider slider-divider"></li>
+        		</ul>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>

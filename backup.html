@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<script src="/verbs.js"></script>
+<script src="/jquery-3.1.1.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap-theme.css">
+<script src="./bootstrap/dist/js/bootstrap.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./styles/custom-checkbox.css">
+
+<style>
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body, .main {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+//input[type=checkbox] {
+	display: none;
+}
+
+//label.check:before {
+	content: '';
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	margin: 5px 10px;
+	border-radius: 50%;
+	background-color: white;
+	border: 2px solid #444;
+	vertical-align: middle;
+}
+
+//input[type=checkbox]:checked + label.check:before {
+	background-color: #45ab23;
+}
+
+label.check {
+	margin-left: 10px;
+	padding: 3px;
+}
+
+.main {
+	display: table;
+	text-align: center;
+	overflow: auto;
+}
+
+.wrap {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#verbs-wrap {
+	max-width: 600px;
+	margin: auto;
+	display: inline-block;
+}
+
+.lists ul {
+	list-style-type: none;
+	background-color: #eee;
+        border-radius: 10px;
+        border: 1px solid #aaa;
+        padding: 15px;
+	text-align: left;
+}
+
+.lists ul li {
+	padding: 15px 10px;
+	border-bottom: 1px solid #555;
+	font-size: 24px;
+	line-height: 30px;
+}
+
+.lists ul li:last-child {
+	border-bottom: none;
+}
+
+#categories-list {
+	margin-bottom: 20px;
+}
+
+#verbs-list {
+	max-height: 600px;
+	overflow: auto;
+}
+
+.verbs-header {
+	padding: 15px;
+	font-size: 30px;
+	line-height: 30px;
+	text-align: center;
+	max-width: 300px;
+	margin: auto;
+}
+
+.verbs-footer {
+	padding: 10px;
+	text-align: center;
+}
+
+button {
+	padding: 15px;
+	font-size: 22px;
+	line-height 22px;
+	border-radius: 4px;
+	outline: 0;
+	background-color: #bbb;
+	background-image: none;
+	border: 1px solid #aaa;
+}
+
+button:hover {
+	cursor: pointer;
+	background-color: #aaa;
+}
+
+#conj-inf {
+	text-align: center;
+	font-size: 30px;
+	line-height: 30px;
+	padding-bottom: 5px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #aaa;
+}
+
+#conj-subjects {
+	display: table;
+	table-layout: fixed;
+	list-style-type: none;
+}
+
+#conj-subjects li {
+	display: table-row;
+	padding: 4px;
+}
+
+#conj-subjects li span {
+	display: table-cell;
+	padding: 5px;
+	font-size: 20px;
+	line-height: 20px;
+}
+
+#conj-subjects li span input {
+	padding: 10px;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+.conj-footer {
+	margin-top: 15px;
+	border-top: 1px solid #aaa;
+	padding: 10px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function init()
+{
+	$("#categories-list").empty();
+	$("#verbs-list").empty();
+
+	for(var i = 0; i < VERBS.length; i++)
+	{
+		$("#categories-list").append("<li data-cid='" + i + "'><input type='checkbox'><label class='check'>" + VERBS[i].cname + "</label></li>");
+	
+		for(var j = 0; j < VERBS[i].verbs.length; j++)
+			$("#verbs-list").append("<li data-vid='" + j + "' data-cid='" + i + "'><input type='checkbox'><label class='check'>" + VERBS[i].verbs[j].inf + "</label></li>");
+	}
+
+	window.setTimeout(function() {
+		$("#categories-list input[type=checkbox]").change(function() {
+			var c = this.parentNode.dataset.cid;
+			var t = this.checked;
+			$("#verbs-list li").each(function() {
+				if(this.dataset.cid == c)
+					$(this).find("input[type=checkbox]").prop("checked", t);
+			});
+		});
+
+		$("#verbs-go").click(function() {
+			var tverbs = [];
+
+			$("#verbs-list li").each(function() {
+				if(this.children[0].checked)
+					tverbs.push(VERBS[this.dataset.cid].verbs[this.dataset.vid]);
+			});
+
+			if(!tverbs.length)
+			{
+				alert("Choisissez quelques verbes");
+				return;
+			}
+
+			shuffle(tverbs);
+
+			$("#verbs-wrap").css("display", "none");
+
+			$("#conj-wrap").css("display", "inline-block");
+
+			var vidx = 0;
+			function nextVerb()
+			{
+				if(vidx == tverbs.length)
+				{
+					$("#conj-next").off("click");
+					$("#conj-wrap").css("display", "none");
+				}
+				else
+				{
+					$("#conj-inf").html(tverbs[vidx++].inf);
+				}
+			}
+
+			nextVerb();
+			$("#conj-next").click(nextVerb);
+		});
+	}, 50);
+}
+
+</script>
+
+</head>
+
+<body onload="init()">
+
+<div class="main">
+	<div class="wrap">
+		<div id="verbs-wrap">
+			<div class="verbs-header">
+				Choisissez les verbes que vous voulez reviser
+			</div>
+			<div class="lists">
+				<ul id="categories-list">
+					<li><input type="checkbox"><label class="check">Les verbes irreguliers</label></li>
+					<li><input type="checkbox"><label class="check">Les verbes reguliers</label></li>
+				</ul>
+				<ul id="verbs-list">
+					<li><input type="checkbox"><label class="check">Etre</label></li>
+					<li><input type="checkbox"><label class="check">Avoir</label></li>
+				</ul>
+			</div>
+			<div class="verbs-footer">
+				<button id="verbs-go">Commencer!</button>
+			</div>
+		</div>
+		<div id="conj-wrap" style="display:none;">
+			<div id="conj-inf"></div>
+			<div class="conj-conj">
+				<ul id="conj-subjects">
+					<li>
+						<span><b>Je/J'</b></span>
+						<span><input type="text"></span>
+					</li>
+					<li>
+						<span><b>Tu</b></span>
+						<span><input type="text"></span>
+					</li>
+					<li>
+						<span><b>Il/Elle/On</b></span>
+						<span><input type="text"></span>
+					</li>
+					<li>
+						<span><b>Nous</b></span>
+						<span><input type="text"></span>
+					</li>
+					<li>
+						<span><b>Vous</b></span>
+						<span><input type="text"></span>
+					</li>
+					<li>
+						<span><b>Ils/Elles</b></span>
+						<span><input type="text"></span>
+					</li>
+				</ul>
+			</div>
+			<div class="conj-footer">
+				<button id="conj-next">Allons-y!</button>
+			</div>
+		</div>
+	</div>	
+</div>
+
+</body>
+
+</html>
