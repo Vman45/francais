@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="fr-FR">
 
 <head>
 
 <script src="/verbs.js"></script>
 <script src="/jquery-3.1.1.min.js"></script>
+<script src="/jquery.transform2d.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap-theme.css">
 <script src="./bootstrap/dist/js/bootstrap.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./styles/custom-checkbox.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=0.6, minimum-scale=1, user-scalable=yes">
+
+<title>Verbes</title>
 
 <style>
 
@@ -23,7 +29,6 @@
 html, body, .main {
 	height: 100%;
 	width: 100%;
-	overflow: hidden;
 }
 
 //input[type=checkbox] {
@@ -54,10 +59,15 @@ label.check {
 .main {
 	display: table;
 	text-align: center;
-	overflow: auto;
+	padding: 20px;
 }
 
 .wrap {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.top {
 	display: table-cell;
 	vertical-align: middle;
 }
@@ -96,7 +106,10 @@ button {
 	outline: 0;
 	background-color: #bbb;
 	background-image: none;
-	border: 1px solid #aaa;
+	border: 2px solid #aaa;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 }
 
 button:hover {
@@ -104,37 +117,62 @@ button:hover {
 	background-color: #aaa;
 }
 
+button:active {
+	cursor: pointer;
+	background-color: #a1a1a1;
+}
+
+button:focus {
+	border: 2px solid #777;
+}
+
 #conj-inf {
-	text-align: center;
 	font-size: 30px;
 	line-height: 30px;
+	text-align: center;
 	padding-bottom: 5px;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #aaa;
 }
 
-#conj-subjects {
+.conj-body {
 	display: table;
 	table-layout: fixed;
 	list-style-type: none;
+	margin: auto;
 }
 
-#conj-subjects li {
+.conj-body li {
 	display: table-row;
 	padding: 4px;
 }
 
-#conj-subjects li span {
+.conj-body li span {
 	display: table-cell;
 	padding: 5px;
 	font-size: 20px;
 	line-height: 20px;
 }
 
-#conj-subjects li span input {
+.conj-body li span input {
 	padding: 10px;
 	font-size: 18px;
 	line-height: 18px;
+	display: table-cell;
+	width: 100%;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	border: 2px solid #ddd;
+	background-color: #fefefe;
+}
+
+.conj-body li span input.wrong {
+	border: 2px solid #ef1234;
+}
+
+.conj-body li span input.right {
+	border: 2px solid #12ef34;
 }
 
 .conj-footer {
@@ -143,9 +181,62 @@ button:hover {
 	padding: 10px;
 }
 
+#categories-list .list-group-item:hover {
+	cursor: pointer;
+}
+
+#categories-list .list-group-item.checked {
+	background-color: #444;
+	color: #f4f4f4;
+}
+
+.custom-checkbox {
+	width: 25px;
+	height: 25px;
+	display: inline-block;
+	vertical-align: middle;
+	background-color: #eee;
+	border: 3px solid #aaa;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.custom-checkbox:hover {
+	cursor: pointer;
+}
+
+.custom-checkbox.checked {
+	background-color: #444;
+}
+
+#categories-list .list-group {
+	max-height: 300px;
+	overflow: auto;
+}
+
+.answer {
+	padding-right: 20px !important;
+}
+
 </style>
 
 <script type="text/javascript">
+
+/*
+	Tenses:
+
+	0 -> Present
+	1 -> Passe compose
+	2 -> Futur Simple
+
+*/
+
+SETTINGS = {
+	//random: true,
+	subject: -1,
+	tense: 0,
+	nverbs: 10
+};
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -173,36 +264,61 @@ function init()
 
 	for(var i = 0; i < VERBS.length; i++)
 	{
+		//console.log("stuff");
 		$("#categories-list").append(
-			"<div class='panel-group' id='accordion' data-cid='" + i + "'>" +
+			"<div class='panel-group' id='accordion" + i + "' data-cid='" + i + "'>" +
                         	"<div class='panel panel-default'>" +
                                 	"<div class='panel-heading'>" +
                                         	"<h4 class='panel-title'>" +
-                                                	"<input type='checkbox'><a data-toggle='collapse' data-parent='#accordion' href='#collapse1'>" + VERBS[i].cname + "</a>" +
+                                                	"<div class='custom-checkbox'></div><a data-toggle='collapse' data-parent='#accordion" + i + "' href='#collapse" + i + "'>" + VERBS[i].cname + "</a>" +
                                                 "</h4>" +
                                         "</div>" +
-                                        "<div id='collapse1' class='panel-collapse collapse'>" +
-                                        "<ul class='list-group'></ul>" +
+                                        "<div id='collapse" + i + "' class='panel-collapse collapse'>" +
+                                        	"<ul class='list-group'></ul>" +
+					"</div>" +
 				"</div>" +
 			"</div>"
 		);
 	}
 
 	window.setTimeout(function() {
-		$("#categories-list input[type=checkbox]").change(function() {
-			var c = this.parentNode.dataset.cid;
-			var t = this.checked;
-			$("#verbs-list li").each(function() {
-				if(this.dataset.cid == c)
-					$(this).find("input[type=checkbox]").prop("checked", t);
+		$("#categories-list .panel-group").each(function() {
+			for(var i = 0; i < VERBS[this.dataset.cid].verbs.length; i++)
+				$(this).find(".list-group").append("<li class='list-group-item' data-cid='" + this.dataset.cid + "' data-vid='" + i + "'>" + VERBS[this.dataset.cid].verbs[i].inf + "</li>");
+		});
+
+		$("#categories-list .panel-title .custom-checkbox").click(function() {
+                        var c = this.parentNode.parentNode.parentNode.parentNode.dataset.cid;
+			var t = !$(this).hasClass("checked");
+			$(this).toggleClass("checked");
+
+			if(t)
+                        	$(this.parentNode.parentNode.parentNode).find(".list-group .list-group-item").addClass("checked");
+                	else
+				$(this.parentNode.parentNode.parentNode).find(".list-group .list-group-item").removeClass("checked");
+		});
+
+		$("#categories-list .list-group-item").click(function() {
+			$(this).toggleClass("checked");
+
+			var n = 0;
+			var l = $(this.parentNode).find(".list-group-item");
+			l.each(function() {
+				if($(this).hasClass("checked"))
+					n++;
 			});
+//console.log(this.parentNode.parentNode);
+			if(l.length === n)
+				$(this.parentNode.parentNode.parentNode).find(".custom-checkbox").addClass("checked");
+			else
+				$(this.parentNode.parentNode.parentNode).find(".custom-checkbox").removeClass("checked");
 		});
 
 		$("#verbs-go").click(function() {
 			var tverbs = [];
 
-			$("#verbs-list li").each(function() {
-				if(this.children[0].checked)
+			$("#categories-list .list-group-item").each(function() {
+				if($(this).hasClass("checked"))
 					tverbs.push(VERBS[this.dataset.cid].verbs[this.dataset.vid]);
 			});
 
@@ -212,30 +328,143 @@ function init()
 				return;
 			}
 
+			//if(SETTINGS.random)
 			shuffle(tverbs);
 
 			$("#verbs-wrap").css("display", "none");
 
 			$("#conj-wrap").css("display", "inline-block");
 
-			var vidx = 0;
+			var vidx = -1;
+			var wrong = false;
 			function nextVerb()
 			{
+				vidx++;
+
 				if(vidx == tverbs.length)
-				{
-					$("#conj-next").off("click");
-					$("#conj-wrap").css("display", "none");
+                                {
+                                        $("#conj-form").off("submit");
+                                        $("#conj-wrap").css("display", "none");
+                                	return;
 				}
-				else
-				{
-					$("#conj-inf").html(tverbs[vidx++].inf);
+                                else
+                                {
+					$("#conj-wrap").animate({ opacity: "0" }, 200, function() {
+					
+					$(".conj-body li span input").removeClass("wrong").removeClass("right").val("");
+       	                                $("#conj-try").css("display", "none");
+					$("#conj-next").css("display", "none");
+					$("#conj-submit").css("display", "inline-block");
+               	                        wrong = false;
+					$("#conj-inf").html(tverbs[vidx].inf);
+					$(".conj-body .answer").html("");
+
+					if(SETTINGS.subject === -2)
+       	                 		{
+						//var a = [];
+						//if(SETTINGS.tense === 0)
+						//	a = ["Je", "Tu", "Il/Elle/On", "Nous", "Vous", "Ils/Elles"];
+						//else
+						var a = ["Je", "Tu", "Il/Elle/On", "Nous", "Vous", "Ils/Elles"];
+
+						var s = Math.floor(Math.random() * (a.length - 0.01));
+                	                	$("#conj-one li span")[0].innerHTML = a[s];
+						$("#conj-one li span input")[0].dataset.subj = s;
+					
+						$("#conj-all").css("display", "none");
+	
+						//$("#conj-allc").css("display", "none");
+                	                        $("#conj-one").css("display", "table");
+                        		}
+					else if(SETTINGS.subject === -1)
+					{
+						//if(SETTINGS.tense === 0)
+						//{
+						//	$("#conj-allc").css("display", "table");
+						//	$("#conj-all").css("display", "none");
+						//}
+						//else
+						//{
+						$("#conj-all").css("display", "table");
+						//	$("#conj-allc").css("display", "none");
+						//}
+
+						$("#conj-one").css("display", "none");
+					}
+					else
+					{
+						var a = ["Je", "Tu", "Il/Elle/On", "Nous", "Vous", "Ils/Elles"];
+				
+						$("#conj-one li span")[0].innerHTML = "<b>" + a[SETTINGS.subject] + "</b>";
+						$("#conj-one li span input")[0].dataset.subj = SETTINGS.subject;
+				
+	                                        $("#conj-all").css("display", "none");
+       	                	                //$("#conj-allc").css("display", "none");
+       	        	                        $("#conj-one").css("display", "table");
+					}
+
+					$("#conj-wrap").animate({ opacity: "1" }, 200);
+
+					});
 				}
 			}
 
 			nextVerb();
-			$("#conj-next").click(nextVerb);
+			$("#conj-form").submit(function(e) {
+				e.preventDefault();
+
+				$(".conj-body li span input").blur();
+
+				var w = 0;
+				if(SETTINGS.subject === -1)
+				{
+					$("#conj-all li span input").each(function() {
+						$(this).parent().prev().html(tverbs[vidx].tenses[SETTINGS.tense][this.dataset.subj]);
+
+						if(this.value.toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][this.dataset.subj].toLowerCase()) {
+							$(this).addClass("wrong");
+							w++;
+						}
+						else
+							$(this).addClass("right");
+					});
+				}
+				else
+				{
+					var input = $("#conj-one li span input")[0];
+
+					$(input).parent().prev().html(tverbs[vidx].tenses[SETTINGS.tense][input.dataset.subj]);
+
+					if(input.value.toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][input.dataset.subj].toLowerCase()) {
+						$(input).addClass("wrong");
+						w++;
+					}
+					else
+						$(input).addClass("right");
+				}
+
+				$("#conj-submit").css("display", "none");
+
+				$("#conj-try").css("display", "inline-block").off("click").click(function() {
+					vidx--;
+					nextVerb();
+				});
+
+				$("#conj-next").css("display", "inline-block").off("click").click(nextVerb);
+			});
 		});
 	}, 100);
+
+	/*$(window).resize(function() {
+		var h1 = $("#conj-wrap").height();
+		var h2 = $(window).height();
+		console.log(h1 + " " + h2);
+		if(h1 > h2 * 0.98)
+		{
+			var s = h2 * 0.98 / h1;
+			$("#conj-wrap").css("transform", "scale(" + s + ", " + s + ");");
+		}
+	});*/
 }
 
 </script>
@@ -251,59 +480,62 @@ function init()
 				Choisissez les verbes que vous voulez reviser
 			</div>
 			<div class="lists" id="categories-list">
-				<div class="panel-group" id="accordion">
-  					<div class="panel panel-default">
-    						<div class="panel-heading">
-      							<h4 class="panel-title">
-        							<input type='checkbox'><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Collapsible Group 1</a>
-      							</h4>
-    						</div>
-    						<div id="collapse1" class="panel-collapse collapse">
-							<ul class="list-group">
-        							<li class="list-group-item">One</li>
-        							<li class="list-group-item">Two</li>
-        							<li class="list-group-item">Three</li>
-      							</ul>
-    						</div>
-					  </div>
-				</div>
 			</div>
 			<div class="verbs-footer">
 				<button id="verbs-go">Commencer!</button>
 			</div>
 		</div>
-		<div id="conj-wrap" style="display:none;">
+		<div id="conj-wrap" style="display:none; opacity: 0">
 			<div id="conj-inf"></div>
 			<div class="conj-conj">
+				<form id="conj-form">
 				<ul id="conj-subjects">
-					<li>
-						<span><b>Je/J'</b></span>
-						<span><input type="text"></span>
-					</li>
-					<li>
-						<span><b>Tu</b></span>
-						<span><input type="text"></span>
-					</li>
-					<li>
-						<span><b>Il/Elle/On</b></span>
-						<span><input type="text"></span>
-					</li>
-					<li>
-						<span><b>Nous</b></span>
-						<span><input type="text"></span>
-					</li>
-					<li>
-						<span><b>Vous</b></span>
-						<span><input type="text"></span>
-					</li>
-					<li>
-						<span><b>Ils/Elles</b></span>
-						<span><input type="text"></span>
-					</li>
+					<div class="conj-body" id="conj-all" style="display:none">
+                                                <li>
+                                                        <span><b>Je/J'</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="0"></span>
+                                                </li>
+                                                <li>
+                                                        <span><b>Tu</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="1"></span>
+                                                </li>
+                                                <li>
+                                                        <span><b>Il/Elle/On</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="2"></span>
+                                                </li>
+                                                <li>
+                                                        <span><b>Nous</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="3"></span>
+                                                </li>
+                                                <li>
+                                                        <span><b>Vous</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="4"></span>
+                                                </li>
+                                                <li>
+                                                        <span><b>Ils/Elles</b></span>
+							<span class="answer"></span>
+                                                        <span><input type="text" data-subj="5"></span>
+                                                </li>
+                                        </div>
+					<div class="conj-body" id="conj-one" style="display:none">
+						<li>
+							<span><b></b></span>
+							<span class="answer"></span>
+							<span><input type="text"></span>
+						</li>
+					</div>
 				</ul>
+				</form>
 			</div>
 			<div class="conj-footer">
-				<button id="conj-next">Allons-y!</button>
+				<button id="conj-try" style="display:none">Try again</button>
+				<button id="conj-submit" form="conj-form">Corriger les responses</button>
+				<button id="conj-next" style="display:none">L'autre</button>
 			</div>
 		</div>
 	</div>	

@@ -1,0 +1,91 @@
+<html lang="fr-FR">
+
+<head>
+
+<script src="/jquery-3.1.1.min.js"></script>
+
+<script type="text/javascript">
+
+function init()
+{
+//	var verbs = ["abandonner", "accrocher", "admirer", "aider", "aimer", "allumer", "amuser", "apporter", "arriver", "attacher", "attirer", "attraper", "avaler", "avouer", "briller", "cacher", "chanter", "chercher", "commander", "compter", "danser", "frequenter", "demander", "diner", "echapper", "echouer", "ecouter", "ecraser", "embrasser", "emporter", "emprunter", "enseigner", "entourer", "entrer", "epouser", "etudier", "fermer", "decider", "dessiner", "habiter", "imaginer", "inspirer", "inviter", "jouer", "laver", "louer", "travailler", "traverser", "expliquer", "exprimer", "fouiller", "marcher", "gagner", "garder", "gouter", "organiser", "oser", "oublier", "passer", "irriter", "poser", "laisser", "presenter", "preter", "toucher", "tromper", "utiliser", "visiter", "quitter", "raconter", "monter", "montrer", "rentrer", "rester", "retourner", "retrouver", "porter", "sauter", "preparer", "tomber", "refuser", "regarder", "opposer", "saluer", "sonner", "telephoner", "rencontrer"];
+	var verbs = ["commencer", "avancer", "divorcer", "se%20fiancer", "lancer", "menacer", "arranger", "charger", "degager", "diriger", "interroger", "manger", "negliger", "obliger", "plonger", "ranger", "voyager", "corriger", "melanger", "proteger", "changer", "deranger", "exiger", "engager", "juger", "partager", "venger", "balayer", "employer", "ennuyer", "essayer", "essuyer", "nettoyer", "payer", "renvoyer", "achever", "amener", "elever", "emmener", "enlever", "geler", "lever", "mener", "peser", "promener", "appeler", "epousseter", "empaqueter", "etinceler", "jeter", "rappeler", "rejeter", "accelerer", "ceder", "celebrer", "completer", "considerer", "s'inquieter", "interpreter", "posseder", "preceder", "preferer", "proteger", "repeter", "secher", "suggerer"];
+
+	$("#out").html("var VERBS = [<br>");
+
+	var f = "";
+
+	var vidx = 0;
+	next();
+
+	function next()
+	{
+		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++] + ".html #ch_divSimple", function(response, status, xhr) {
+			if(status == "error") {
+				alert(verbs[vidx-1] + " could not be loaded!");
+				if(vidx < verbs.length)
+					next();
+				else
+					end();
+
+				return;
+			}
+
+			var str = "{ inf: \"" + verbs[vidx-1] + "\", tenses: [";
+
+			$("#load").find("#ch_divSimple .responsive-sub").each(function(index) {
+				if(index > 0)
+					return false;
+
+				str += "[";
+				$(this).find("i").each(function() {
+					if(this.outerHTML.slice(0, 43) == "<i style=\"font-style:normal;color:#003EAD\">")
+						str += "\"" + this.innerHTML + "\", ";
+				});
+				str = str.slice(0, -2) + "], ";
+			});
+
+			str = str.slice(0, -2) + "] }, \n";
+
+			f += str;
+
+			$("#out").html($("#out").html() + str.replace("\n", "<br>"));
+
+			if(vidx < verbs.length)
+				next();
+			else
+				end();
+		});
+	}
+
+	function end()
+	{
+		f = f.slice(0, -3) + "\n";
+
+		console.log(f);
+	}
+}
+
+</script>
+
+<style>
+
+#out {
+	font-size: 20px;
+}
+
+</style>
+
+</head>
+
+</script>
+
+<body onload="init()">
+
+<div id="out"></div>
+
+<div id="load" style="display: none"></div>
+
+</body>
+
+</html>
