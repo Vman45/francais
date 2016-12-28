@@ -485,6 +485,12 @@ button.cb:focus {
 	display: none;
 }
 
+.panel-title {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -1037,7 +1043,7 @@ function init()
 					nextVerb();
 				});
 
-				$("#conj-next").css("display", "inline-block").off("click").click(nextVerb);
+				$("#conj-next").css("display", "inline-block").focus().off("click").click(nextVerb);
 			});
 		}
 	}
@@ -1325,7 +1331,7 @@ function searchVerbs()
 			<div class="conj-footer">
 				<button class="cb" id="conj-try" style="display:none">Refaire</button>
 				<button class="cb" id="conj-submit" form="conj-form">Corriger les responses</button>
-				<button class="cb" id="conj-next" style="display:none">Le verbe suivant</button>
+				<button class="cb" id="conj-next" style="display:none">Prochain</button>
 			</div>
 		</div>
 	</div>	
