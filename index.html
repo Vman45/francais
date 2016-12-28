@@ -899,7 +899,13 @@ function init()
 
 					$("#conj-wrap").animate({ opacity: "1" }, 200, function() {
                                         //        console.log("focus"); 
-				               setTimeout(function() { $("#conj-wrap .verbr span input").first().focus(); }, 50);
+				               $("#conj-wrap .verbr span input").each(function() {
+							if($(this).css("display") != "none")
+							{
+								$(this).focus();
+								return false;
+							}
+						});
                                         });
 
 					var su = ["Je/J'", "Tu", "Il", "Elle", "Nous", "Vous", "Ils", "Elles"];
