@@ -1205,7 +1205,7 @@ function searchVerbs()
 
 	if(inp.value === "")
 	{
-		$("#categories-list .panel-group").each(function() {
+		$("#categories-list .panel-group").removeClass("disabled").each(function() {
 			var a = $(this).find(".panel-title a");
 
 			if(a.hasClass("collapsed") && parseInt(this.dataset.wtb) === 1)
@@ -1283,7 +1283,7 @@ function searchVerbs()
 			else
 			{
 				$(this).removeClass("disabled");
-				//$(this.parentNode.parentNode.parentNode.parentNode).css("display", "block");
+				$(this.parentNode.parentNode.parentNode.parentNode).removeClass("disabled");
 
 				var a = $(this.parentNode.parentNode.previousSibling).find(".panel-title a");
 				if(a.hasClass("collapsed"))
