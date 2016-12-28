@@ -729,14 +729,14 @@ function init()
 			if(t)
 			{
                         	$(this.parentNode.parentNode.parentNode).find(".list-group .list-group-item").each(function() {
-					if($(this).css("display") != "none")
+					//if($(this).css("display") != "none")
 						$(this).addClass("checked");
 				});
 			}
                 	else
 			{
 				$(this.parentNode.parentNode.parentNode).find(".list-group .list-group-item").each(function() {
-					if($(this).css("display") != "none")
+					//if($(this).css("display") != "none")
 						$(this).removeClass("checked");
 				});
 			}
@@ -747,7 +747,7 @@ function init()
 
 			var all = true;
 			$(this.parentNode).find(".list-group-item").each(function() {
-				if(!$(this).hasClass("checked") && $(this).css("display") != "none")
+				if(!$(this).hasClass("checked"))// && $(this).css("display") != "none")
 				{
 					all = false;
 					return false;
@@ -1099,7 +1099,7 @@ function searchVerbs()
 			{
 				$(this).css("display", "none");
 			
-				var v = false;
+				/*var v = false;
 				var all = true;
 				for(var i = 0; i < this.parentNode.children.length; i++)
 				{
@@ -1134,7 +1134,7 @@ function searchVerbs()
 						$("#no-results").css("display", "block");
 					else
 						$("#no-results").css("display", "none");
-				}
+				}*/
 			}
 			else
 			{
