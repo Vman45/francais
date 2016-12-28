@@ -3,6 +3,7 @@
 <head>
 
 <script src="./jquery-3.1.1.min.js"></script>
+<script src="./verbs.js"></script>
 
 <script type="text/javascript">
 
@@ -25,10 +26,10 @@ function init()
 
 	function fix()
 	{
-		$.get("./verbs.js", function(data) {
-			var d = JSON.parse(data.substr(8, data.length - 9));
+//		$.get("./verbs.js", function(data) {
+			var d = VERBS; //JSON.parse(data.substr(8, data.length - 9));
 
-			console.log(d);
+			//console.log(d);
 			for(var i = 0; i < d.length; i++)
 			{
 				for(var j = 0; j < d[i].verbs.length; j++)
@@ -39,7 +40,7 @@ function init()
 			}
 
 			console.log(JSON.stringify(d));
-		});
+//		});
 	}
 
 	function next()
