@@ -805,7 +805,7 @@ function init()
 				$(this.parentNode.parentNode.parentNode).find(".custom-checkbox").removeClass("checked");
 		});
 
-		$("#verbs-go").off("click").click(beginVerbs);
+		$(".verbs-go").off("click").click(beginVerbs);
 		$("#restart-btn").off("click").click(function() {
 			if($("#verbs-wrap").css("display") == "none")
 				beginVerbs();
@@ -1291,10 +1291,13 @@ function searchVerbs()
 			<div id="no-results" style="display:none">
 				Il n'y a pas de verbes avec cette recherche
 			</div>
+			<div class="verbs-footer">
+                                <button class="cb" class="verbs-go">Commencer!</button>
+                        </div>
 			<div class="lists" id="categories-list">
 			</div>
 			<div class="verbs-footer">
-				<button class="cb" id="verbs-go">Commencer!</button>
+				<button class="cb" class="verbs-go">Commencer!</button>
 			</div>
 		</div>
 		<div id="conj-cong" style="display:none">
