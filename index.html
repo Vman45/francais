@@ -1093,7 +1093,9 @@ function searchVerbs()
 	else
 	{
 		$("#categories-list .list-group-item").each(function() {
-			if(VERBS[this.dataset.cid].verbs[this.dataset.vid].inf.toLowerCase().latinize().search(inp.value.toLowerCase().latinize()) !== 0)
+			var s = VERBS[this.dataset.cid].verbs[this.dataset.vid].inf.toLowerCase().latinize();
+			var ss = inp.value.toLowerCase().latinize();
+			if(s.substr(0, ss.length) != ss);
 			{
 				$(this).css("display", "none");
 			
