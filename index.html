@@ -491,6 +491,10 @@ button.cb:focus {
 	user-select: none;
 }
 
+.accents-main.temp {
+	visiblity: hidden;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -844,7 +848,9 @@ function init()
                                 else
                                 {
 					$("#conj-wrap").animate({ opacity: "0" }, 200, function() {
-					
+				
+					$(".accents-main").removeClass("temp");
+	
 					$(".verbr span input").removeClass("wrong").removeClass("right").val("");
        	                                $("#conj-try").css("display", "none");
 					$("#conj-next").css("display", "none");
@@ -1032,6 +1038,8 @@ function init()
 					else
 						$(input).addClass("right");
 				}
+
+				$(".accents-main").addClass("temp");
 
 				score += t - w;
 				maxscore += t;
@@ -1234,7 +1242,7 @@ function searchVerbs()
                         </div>
                 </li>
 		<li class="settings-li" id="settings-accents">
-			<span class="cell">Le&nbsp;fênetre des&nbsp;accents</span>
+			<span class="cell">La&nbsp;fênetre des&nbsp;accents</span>
 			<div class="cell"><div class="custom-checkbox checked" id="accent-check"></div></div>
 		</div>
 	</ul>	
@@ -1248,7 +1256,7 @@ function searchVerbs()
 	<div class="wrap">
 		<div id="verbs-wrap">
 			<div class="verbs-header">
-				Choisissez les verbes que vous voulez reviser
+				Choisissez les verbes que vous voulez réviser
 			</div>
 			<div class="verb-input">
 				<input type="text" placeholder="Chercher" oninput="searchVerbs()"></input>
