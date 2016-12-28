@@ -898,14 +898,21 @@ function init()
 					$(".conj-body .verbr").css("display", "table-row");
 
 					$("#conj-wrap").animate({ opacity: "1" }, 200, function() {
-                                        //        console.log("focus"); 
-				               $("#conj-wrap .verbr span input").each(function() {
-							if($(this.parentNode.parentNode).css("display") != "none")
-							{
-								$(this).focus();
-								return false;
-							}
-						});
+                                        //        console.log("focus");
+						if(SETTINGS.subject == -1)
+						{ 
+				               		$("#conj-all .verbr span input").each(function() {
+								if($(this.parentNode.parentNode).css("display") != "none")
+								{
+									$(this).focus();
+									return false;
+								}
+							});
+						}
+						else
+						{
+							$("#conj-one .verbr span input").first().focus();
+						}
                                         });
 
 					var su = ["Je/J'", "Tu", "Il", "Elle", "Nous", "Vous", "Ils", "Elles"];
@@ -928,6 +935,13 @@ function init()
 									break;
 								}
 							}
+						}
+
+						if(tverbs[vidx].tenses[SETTINGS.tense][s] === "")
+						{
+							S("#conj-wrap").stop();
+							nextVerb();
+							return;
 						}
 
 						//var sub = s;
@@ -999,10 +1013,21 @@ function init()
                                                         }
                                                 }*/
 
+						var s = 0;
 						$("#conj-all .verbr").each(function(id) {
 							if(tverbs[vidx].tenses[SETTINGS.tense][id] === "")
+							{
 								$(this).css("display", "none");
+								s++;
+							}
 						});
+
+						if(!s)
+						{
+							$("#conj-wrap").stop();
+							nextVerb();
+							return;
+						}
 
 						$("#conj-one").css("display", "none");
 					}
@@ -1025,6 +1050,7 @@ function init()
                                                         }
 							else
 							{
+								$("#conj-wrap").stop();
 								nextVerb();
 								return;
 							}
