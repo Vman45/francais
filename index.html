@@ -651,28 +651,31 @@ function init()
 	var firstBegin = true;
 
 	setInterval(function() {
-		var none = true;
-		$("#categories-list .panel-group").each(function() {
-			var show = false;
+		if($("#verbs-wrap").css("display") != "none")
+		{
+			var none = true;
+			$("#categories-list .panel-group").each(function() {
+				var show = false;
 
-			$(this).find(".list-group-item").each(function() {
-				if(!$(this).hasClass("disabled"))
-				{
-					show = true;
-					return false;
-				}
+				$(this).find(".list-group-item").each(function() {
+					if(!$(this).hasClass("disabled"))
+					{
+						show = true;
+						return false;
+					}
+				});
+
+				if(!show)
+					$(this).addClass("disabled");
+				else
+					none = false;
 			});
-
-			if(!show)
-				$(this).addClass("disabled");
-			else
-				none = false;
-		});
 	
-		if(none)
-			$("#no-results").css("display", "block");
-		else
-			$("#no-results").css("display", "none");
+			if(none)
+				$("#no-results").css("display", "block");
+			else
+				$("#no-results").css("display", "none");
+		}
 	}, 200);
 
 	function begin()
@@ -1202,7 +1205,7 @@ function searchVerbs()
 
 	if(inp.value === "")
 	{
-		$("#categories-list .panel-group").css("display", "block").each(function() {
+		$("#categories-list .panel-group").each(function() {
 			var a = $(this).find(".panel-title a");
 
 			if(a.hasClass("collapsed") && parseInt(this.dataset.wtb) === 1)
