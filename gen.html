@@ -19,7 +19,16 @@ function init()
 	var f = "";
 
 	var vidx = 0;
-	next();
+//	next();
+
+	fix();
+
+	function fix()
+	{
+		$.get("./verbs.js", function(data) {
+			console.log(data);
+		});
+	}
 
 	function next()
 	{
