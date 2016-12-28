@@ -504,7 +504,7 @@ button.cb:focus {
 }
 
 #verbs-go-first {
-	padding: 8px 5px;
+	padding: 8px 10px;
 }
 
 @media(min-width: 400px) {
@@ -898,8 +898,8 @@ function init()
 					$(".conj-body .verbr").css("display", "table-row");
 
 					$("#conj-wrap").animate({ opacity: "1" }, 200, function() {
-                                        //        console.log("focus");
-                                                $("#conj-wrap .verbr span input").first().focus();
+                                        //        console.log("focus"); 
+				               setTimeout(function() { $("#conj-wrap .verbr span input").first().focus(); }, 50);
                                         });
 
 					var su = ["Je/J'", "Tu", "Il", "Elle", "Nous", "Vous", "Ils", "Elles"];
