@@ -900,7 +900,7 @@ function init()
 					$("#conj-wrap").animate({ opacity: "1" }, 200, function() {
                                         //        console.log("focus"); 
 				               $("#conj-wrap .verbr span input").each(function() {
-							if($(this).css("display") != "none")
+							if($(this.parentNode.parentNode).css("display") != "none")
 							{
 								$(this).focus();
 								return false;
