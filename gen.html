@@ -26,7 +26,7 @@ function init()
 	function fix()
 	{
 		$.get("./verbs.js", function(data) {
-			var d = JSON.parse(data.substr(8, data.length - 8));
+			var d = JSON.parse(data.substr(8, data.length - 9));
 
 			console.log(d);
 			for(var i = 0; i < d.length; i++)
