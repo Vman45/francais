@@ -812,13 +812,16 @@ function init()
 		});
 		$("#crestart").off("click").click(beginVerbs);		
 
+		var score = 0;
+		var maxscore = 0;
+
 		function beginVerbs()
 		{
 			//updateSettings();
 
 			var tverbs = [];
-			var score = 0;
-			var maxscore = 0;
+			score = 0;
+			maxscore = 0;
 
 			$("#categories-list .list-group-item").each(function() {
 				if($(this).hasClass("checked"))
