@@ -853,7 +853,7 @@ function init()
 
 			var vidx = -1;
 			var wrong = false;
-			function nextVerb()
+			function nextVerb(shouldntanimate)
 			{
 				vidx++;
 
@@ -905,7 +905,13 @@ function init()
 
 					$(".conj-body .verbr").css("display", "table-row");
 
-					$("#conj-wrap").animate({ opacity: "1" }, 200, function() {
+					if(!shouldntanimate)
+						$("#conj-wrap").animate({ opacity: "1" }, 200, gorest);
+					else
+						gorest();
+
+					function gorest()
+					{
                                         //        console.log("focus");
 						if(SETTINGS.subject == -1)
 						{ 
@@ -948,7 +954,7 @@ function init()
 						if(tverbs[vidx].tenses[SETTINGS.tense][s] === "")
 						{
 							S("#conj-wrap").stop();
-							nextVerb();
+							nextVerb("y");
 							return;
 						}
 
@@ -965,7 +971,8 @@ function init()
 									sub = a[e[i][1]].indexOf(s);
 									if(sub === -1)
 									{
-										nextVerb();
+										$("#conj-wrap").stop();
+										nextVerb("y");
 										return;
 									}
 
@@ -1033,7 +1040,7 @@ function init()
 						if(!s)
 						{
 							$("#conj-wrap").stop();
-							nextVerb();
+							nextVerb("y");
 							return;
 						}
 
@@ -1059,7 +1066,7 @@ function init()
 							else
 							{
 								$("#conj-wrap").stop();
-								nextVerb();
+								nextVerb("y");
 								return;
 							}
 						}
@@ -1071,7 +1078,7 @@ function init()
        	                	                //$("#conj-allc").css("display", "none");
        	        	                        $("#conj-one").css("display", "table");
 					}
-					});
+					}
 				}
 			}
 
