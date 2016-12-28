@@ -1111,6 +1111,10 @@ function searchVerbs()
 			{
 				$(this).addClass("disabled");
 			
+				var p = $(this.parentNode);
+				if(p.find(".list-group-item:vdis").length === p[0].children.length)
+					p.parent().parent().parent().css("display", "none");
+
 				/*var v = false;
 				var all = true;
 				for(var i = 0; i < this.parentNode.children.length; i++)
