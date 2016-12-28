@@ -503,6 +503,10 @@ button.cb:focus {
 	visibility: hidden;
 }
 
+#verbs-go-first {
+	padding: 8px 5px;
+}
+
 @media(min-width: 400px) {
 	#verbs-go-first {
 		display: none;
@@ -1292,7 +1296,7 @@ function searchVerbs()
 				Choisissez les verbes que vous voulez réviser
 			</div>
 			<div class="verbs-footer">
-                                <button class="cb" id="verbs-go-first" class="verbs-go">Commencer!</button>
+                                <button class="cb verbs-go" id="verbs-go-first">Commencer!</button>
                         </div>
 			<div class="verb-input">
 				<input type="text" placeholder="Chercher" oninput="searchVerbs()"></input>
@@ -1303,7 +1307,7 @@ function searchVerbs()
 			<div class="lists" id="categories-list">
 			</div>
 			<div class="verbs-footer">
-				<button class="cb" class="verbs-go">Commencer!</button>
+				<button class="cb verbs-go">Commencer!</button>
 			</div>
 		</div>
 		<div id="conj-cong" style="display:none">
