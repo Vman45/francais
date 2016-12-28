@@ -652,6 +652,10 @@ function init()
                         {
                                 t = Math.floor(Math.random() * (TENSES.length - 0.01));
                         }
+			else if(t != SETTINGS.tense)
+			{
+				$("#conj-inf").html("<b>" + $("#conj-inf b").html() + "</b><br>" + TENSES[t]);
+			}
 
 			SETTINGS.accents = $("#accent-check").hasClass("checked");
                         if(!SETTINGS.accents)
@@ -659,7 +663,7 @@ function init()
                         else
                                 $(".accents-main").removeClass("nope");
 
-			if((s != SETTINGS.subject || t != SETTINGS.tense) && $("#conj-wrap").css("display") != "none")
+			if(s != SETTINGS.subject && $("#conj-wrap").css("display") != "none")
 			{
 				SETTINGS.subject = s;
                         	SETTINGS.tense = t;
