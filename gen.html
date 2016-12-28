@@ -26,7 +26,19 @@ function init()
 	function fix()
 	{
 		$.get("./verbs.js", function(data) {
-			console.log(data);
+			var d = JSON.parse(data.substr(8, data.length - 8));
+
+			console.log(d);
+			for(var i = 0; i < d.length; i++)
+			{
+				for(var j = 0; j < d[i].verbs.length; j++)
+				{
+					d[i].verbs[j].tenses[4][1] = d[i].verbs[j].tenses[4][0];
+					d[i].verbs[j].tenses[4][0] = "";
+				}
+			}
+
+			console.log(JSON.stringify(d));
 		});
 	}
 
