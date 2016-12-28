@@ -863,18 +863,26 @@ function init()
                                         $("#conj-wrap").animate({ opacity: "0" }, 200, function() {
 						$("#conj-wrap").css("display", "none");
 						
-						var p = parseInt(100 * score / maxscore);
-						$("#cong-score").html(p + "%");
-						if(p <= 20)
-							$("#cong-text").html("Mauvaise chance!");
-						else if(p <= 40)
-							$("#cong-text").html("Pas mal!");
-						else if(p <= 60)
-                                                        $("#cong-text").html("Bien!");
-						else if(p <= 80)
-                                                        $("#cong-text").html("Très bien!");
+						if(maxscore)
+						{
+							var p = parseInt(100 * score / maxscore);
+							$("#cong-score").html(p + "%");
+							if(p <= 20)
+								$("#cong-text").html("Mauvaise chance!");
+							else if(p <= 40)
+								$("#cong-text").html("Pas mal!");
+							else if(p <= 60)
+               	                                         	$("#cong-text").html("Bien!");
+							else if(p <= 80)
+               	                                         	$("#cong-text").html("Très bien!");
+							else
+								$("#cong-text").html("Parfait!");
+						}
 						else
-							$("#cong-text").html("Parfait!");
+						{
+							$("#conj-text").html("Mauvaise chance!");
+							$("#cong-score").html("0%");
+						}
 
 						$("#conj-cong").css("display", "inline-block").css("opacity", "0").animate({ opacity: "1" }, 200);
 					});
