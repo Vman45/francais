@@ -124,12 +124,17 @@ button.cb:focus {
 }
 
 #conj-inf {
-	font-size: 30px;
-	line-height: 30px;
+	font-size: 25px;
+	line-height: 27px;
 	text-align: center;
-	padding-bottom: 5px;
+	padding-bottom: 8px;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #aaa;
+}
+
+#conj-inf b {
+	font-size: 32px;
+	line-height: 35px;
 }
 
 .conj-body {
@@ -510,7 +515,7 @@ button.cb:focus {
 
 */
 
-SETTINGS = {
+var SETTINGS = {
 	//random: true,
 	subject: -1,
 	tense: 0,
@@ -518,7 +523,14 @@ SETTINGS = {
 	accents: true
 };
 
-NUM_TENSES = 1;
+var TENSES = [
+	"présent",
+	"imparfait",
+	"passé&nbsp;simple",
+	"futur",
+	"impératif",
+	"conditionnel"
+];
 
 window.mobilecheck = function() {
   var check = false;
@@ -637,7 +649,7 @@ function init()
 
 			if(t === -1)
                         {
-                                t = Math.floor(Math.random() * (NUM_TENSES - 0.01));
+                                t = Math.floor(Math.random() * (TENSES.length - 0.01));
                         }
 
 			SETTINGS.accents = $("#accent-check").hasClass("checked");
@@ -862,7 +874,7 @@ function init()
 					$("#conj-next").css("display", "none");
 					$("#conj-submit").css("display", "inline-block");
                	                        wrong = false;
-					$("#conj-inf").html(tverbs[vidx].inf);
+					$("#conj-inf").html(TENSES[SETTINGS.tense] + "<b>" + tverbs[vidx].inf + "</b>");
 					$(".conj-body .answer").html("");
 
 					$(".conj-body .verbr").css("display", "table-row");
