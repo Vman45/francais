@@ -1003,7 +1003,7 @@ function init()
 							$(this).parent().prev().html(tverbs[vidx].tenses[SETTINGS.tense][this.dataset.subj]);
 
 							t++;
-							if(this.value.toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][this.dataset.subj].toLowerCase()) {
+							if(this.value.replace(" " , "").replace("	", "").toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][this.dataset.subj].toLowerCase()) {
 								$(this).addClass("wrong");
 								w++;
 							}
@@ -1019,7 +1019,7 @@ function init()
 					t++;
 					$(input).parent().prev().html(tverbs[vidx].tenses[SETTINGS.tense][input.dataset.subj]);
 
-					if(input.value.toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][input.dataset.subj].toLowerCase()) {
+					if(input.value.replace(" " , "").replace("	", "").toLowerCase() !== tverbs[vidx].tenses[SETTINGS.tense][input.dataset.subj].toLowerCase()) {
 						$(input).addClass("wrong");
 						w++;
 					}
@@ -1111,9 +1111,9 @@ function searchVerbs()
 			{
 				$(this).addClass("disabled");
 			
-				var p = $(this.parentNode);
+				/*var p = $(this.parentNode);
 				if(p.find(".list-group-item:vdis").length === p[0].children.length)
-					p.parent().parent().parent().css("display", "none");
+					p.parent().parent().parent().css("display", "none");*/
 
 				/*var v = false;
 				var all = true;
