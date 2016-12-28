@@ -925,8 +925,10 @@ function init()
                                 {
 					if(!shouldntanimate)
 						$("#conj-wrap").animate({ opacity: "0" }, 200, gorest)
-					else
+					else {
+						console.log("no anim");
 						gorest();
+					}
 
 					function gorest()
 					{				
