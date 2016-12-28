@@ -635,7 +635,7 @@ function init()
                 	var s = parseInt($("#dropdownMenu1")[0].dataset.val);
                 	var t = parseInt($("#dropdownMenu2")[0].dataset.val);
 
-			if(s != SETTINGS.subject && $("#conj-wrap").css("display") != "none")
+			if((s != SETTINGS.subject || t != SETTINGS.tense) && $("#conj-wrap").css("display") != "none")
 			{
 				SETTINGS.subject = s;
                         	SETTINGS.tense = t;
