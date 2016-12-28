@@ -481,6 +481,10 @@ button.cb:focus {
 	margin-bottom: 6px;
 }
 
+.list-group-item.disabled {
+	display: none;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -538,6 +542,8 @@ function init()
 {
 	$("#categories-list").empty();
 	$("#verbs-list").empty();
+
+	jQuery.extend(jQuery.expr[':'], { vdis: function(el) { return $(this).hasClass("disabled"); } });
 
 	for(var i = 0; i < VERBS.length; i++)
 	{
@@ -603,6 +609,8 @@ function init()
 	$("#home-btn").click(begin);
 	$("#cnew").click(begin);
 
+	var firstBegin = true;
+
 	function begin()
 	{
 		$(".panel-title a").off("click").on("click", function(e, s) {
@@ -662,10 +670,14 @@ function init()
 			$("#modal").removeClass("active");
 		});
 
-		$("#categories-list .panel-group").each(function() {
-			for(var i = 0; i < VERBS[this.dataset.cid].verbs.length; i++)
-				$(this).find(".list-group").append("<li class='list-group-item' data-cid='" + this.dataset.cid + "' data-vid='" + i + "'>" + VERBS[this.dataset.cid].verbs[i].inf + "</li>");
-		});
+		if(firstBegin)
+		{
+			$("#categories-list .panel-group").each(function() {
+				for(var i = 0; i < VERBS[this.dataset.cid].verbs.length; i++)
+					$(this).find(".list-group").append("<li class='list-group-item' data-cid='" + this.dataset.cid + "' data-vid='" + i + "'>" + VERBS[this.dataset.cid].verbs[i].inf + "</li>");
+			});
+			firstBegin = false;
+		}
 
 		$(".verbr span input").off("focus").focus(function() {
 			$(".accents-main").removeClass("active");
@@ -1088,7 +1100,7 @@ function searchVerbs()
                                 	$(this).find(".custom-checkbox").removeClass("checked");
 		});
 		
-		$("#categories-list .list-group-item").css("display", "block");
+		$("#categories-list .list-group-item").removeClass("disabled");
 	}
 	else
 	{
@@ -1097,7 +1109,7 @@ function searchVerbs()
 			var ss = inp.value.toLowerCase().latinize();
 			if(s.substr(0, ss.length) != ss)
 			{
-				$(this).css("display", "none");
+				$(this).addClass("disabled");
 			
 				/*var v = false;
 				var all = true;
@@ -1138,7 +1150,7 @@ function searchVerbs()
 			}
 			else
 			{
-				$(this).css("display", "block");
+				$(this).removeClass("disabled");
 				$(this.parentNode.parentNode.parentNode.parentNode).css("display", "block");
 
 				var a = $(this.parentNode.parentNode.previousSibling).find(".panel-title a");
