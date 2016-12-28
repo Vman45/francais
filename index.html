@@ -124,8 +124,8 @@ button.cb:focus {
 }
 
 #conj-inf {
-	font-size: 25px;
-	line-height: 27px;
+	font-size: 20px;
+	line-height: 23px;
 	text-align: center;
 	padding-bottom: 8px;
 	margin-bottom: 15px;
@@ -135,7 +135,7 @@ button.cb:focus {
 #conj-inf b {
 	font-size: 32px;
 	line-height: 35px;
-	font-weight: 550;
+	font-weight: 500;
 }
 
 .conj-body {
@@ -875,7 +875,7 @@ function init()
 					$("#conj-next").css("display", "none");
 					$("#conj-submit").css("display", "inline-block");
                	                        wrong = false;
-					$("#conj-inf").html(TENSES[SETTINGS.tense] + " du&nbsp;verbe <br><b>" + tverbs[vidx].inf + "</b>");
+					$("#conj-inf").html("<b>" + tverbs[vidx].inf + "</b><br>" + TENSES[SETTINGS.tense]);
 					$(".conj-body .answer").html("");
 
 					$(".conj-body .verbr").css("display", "table-row");
