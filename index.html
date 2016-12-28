@@ -135,6 +135,7 @@ button.cb:focus {
 #conj-inf b {
 	font-size: 32px;
 	line-height: 35px;
+	font-weight: 550;
 }
 
 .conj-body {
@@ -874,7 +875,7 @@ function init()
 					$("#conj-next").css("display", "none");
 					$("#conj-submit").css("display", "inline-block");
                	                        wrong = false;
-					$("#conj-inf").html(TENSES[SETTINGS.tense] + "<b>" + tverbs[vidx].inf + "</b>");
+					$("#conj-inf").html(TENSES[SETTINGS.tense] + " du&nbsp;verbe <br><b>" + tverbs[vidx].inf + "</b>");
 					$(".conj-body .answer").html("");
 
 					$(".conj-body .verbr").css("display", "table-row");
