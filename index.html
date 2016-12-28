@@ -635,26 +635,30 @@ function init()
                 	var s = parseInt($("#dropdownMenu1")[0].dataset.val);
                 	var t = parseInt($("#dropdownMenu2")[0].dataset.val);
 
+			if(t === -1)
+                        {
+                                t = Math.floor(Math.random() * (NUM_TENSES - 0.01));
+                        }
+
+			SETTINGS.accents = $("#accent-check").hasClass("checked");
+                        if(!SETTINGS.accents)
+                                $(".accents-main").addClass("nope");
+                        else
+                                $(".accents-main").removeClass("nope");
+
 			if((s != SETTINGS.subject || t != SETTINGS.tense) && $("#conj-wrap").css("display") != "none")
 			{
 				SETTINGS.subject = s;
                         	SETTINGS.tense = t;
 				beginVerbs();
+				return;
 			}
 
 			SETTINGS.subject = s;
 			SETTINGS.tense = t;
-			SETTINGS.accents = $("#accent-check").hasClass("checked");
-			if(!SETTINGS.accents)
-				$(".accents-main").addClass("nope");
-			else
-				$(".accents-main").removeClass("nope");
-
-                	if(SETTINGS.tense === -1)
-                	{
-                	        SETTINGS.tense = Math.floor(Math.random() * (NUM_TENSES - 0.01));
-        		}
 		}
+
+		updateSettings();
 
 		$("#modal").off("click").click(function(e) {
 			if(e.pageX > $("#settings-main").width())
@@ -793,7 +797,7 @@ function init()
 
 		function beginVerbs()
 		{
-			updateSettings();
+			//updateSettings();
 
 			var tverbs = [];
 			var score = 0;
