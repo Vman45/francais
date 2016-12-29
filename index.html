@@ -889,7 +889,7 @@ function init()
 			{
 				vidx++;
 
-				if(vidx == tverbs.length)
+				if(vidx >= tverbs.length)
                                 {
                                         $("#conj-form").off("submit");
                                         $("#conj-wrap").stop().animate({ opacity: "0" }, 200, function() {
