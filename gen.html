@@ -7,6 +7,11 @@
 
 <script type="text/javascript">
 
+var Latinise={};Latinise.latin_map={"é":"e","à":"a","è":"e","ù":"u","â":"a","ê":"e","î":"i","ô":"o","û":"u","ç":"c","ë":"e","ï":"i","ü":"u"};
+String.prototype.latinise=function(){return this.replace(/[^A-Za-z0-9\[\] ]/g,function(a){return Latinise.latin_map[a]||a})};
+String.prototype.latinize=String.prototype.latinise;
+String.prototype.isLatin=function(){return this==this.latinise()}
+
 function init()
 {
 //	var verbs = ["parler", "abandonner", "accrocher", "admirer", "aider", "aimer", "allumer", "amuser", "apporter", "arriver", "attacher", "attirer", "attraper", "avaler", "avouer", "briller", "cacher", "chanter", "chercher", "commander", "compter", "danser", "frequenter", "demander", "diner", "echapper", "echouer", "ecouter", "ecraser", "embrasser", "emporter", "emprunter", "enseigner", "entourer", "entrer", "epouser", "etudier", "fermer", "decider", "dessiner", "habiter", "imaginer", "inspirer", "inviter", "jouer", "laver", "louer", "travailler", "traverser", "expliquer", "exprimer", "fouiller", "marcher", "gagner", "garder", "gouter", "organiser", "oser", "oublier", "passer", "irriter", "poser", "laisser", "presenter", "preter", "toucher", "tromper", "utiliser", "visiter", "quitter", "raconter", "monter", "montrer", "rentrer", "rester", "retourner", "retrouver", "porter", "sauter", "preparer", "tomber", "refuser", "regarder", "opposer", "saluer", "sonner", "telephoner", "rencontrer"];
@@ -49,7 +54,7 @@ function init()
 
 	function next_add()
 	{
-		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++] + ".html #ch_divSimple", function(response, status, xhr) {
+		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++].inf.latinise() + ".html #ch_divSimple", function(response, status, xhr) {
                         if(status == "error") {
                                 console.log(verbs[vidx-1] + " could not be loaded!");
                                 if(vidx < verbs.length)
@@ -105,7 +110,7 @@ function init()
 	{
 		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++] + ".html #ch_divSimple", function(response, status, xhr) {
 			if(status == "error") {
-				alert(verbs[vidx-1] + " could not be loaded!");
+				//alert(verbs[vidx-1] + " could not be loaded!");
 				if(vidx < verbs.length)
 					next();
 				else
