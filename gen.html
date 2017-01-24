@@ -3,7 +3,7 @@
 <head>
 
 <script src="./jquery-3.1.1.min.js"></script>
-<script src="./verbs.js"></script>
+<script src="./verbs.js.backup2"></script>
 
 <script type="text/javascript">
 
@@ -12,7 +12,7 @@ String.prototype.latinise=function(){return this.replace(/[^A-Za-z0-9\[\] ]/g,fu
 String.prototype.latinize=String.prototype.latinise;
 String.prototype.isLatin=function(){return this==this.latinise()}
 
-function init()
+function init(cat)
 {
 //	var verbs = ["parler", "abandonner", "accrocher", "admirer", "aider", "aimer", "allumer", "amuser", "apporter", "arriver", "attacher", "attirer", "attraper", "avaler", "avouer", "briller", "cacher", "chanter", "chercher", "commander", "compter", "danser", "frequenter", "demander", "diner", "echapper", "echouer", "ecouter", "ecraser", "embrasser", "emporter", "emprunter", "enseigner", "entourer", "entrer", "epouser", "etudier", "fermer", "decider", "dessiner", "habiter", "imaginer", "inspirer", "inviter", "jouer", "laver", "louer", "travailler", "traverser", "expliquer", "exprimer", "fouiller", "marcher", "gagner", "garder", "gouter", "organiser", "oser", "oublier", "passer", "irriter", "poser", "laisser", "presenter", "preter", "toucher", "tromper", "utiliser", "visiter", "quitter", "raconter", "monter", "montrer", "rentrer", "rester", "retourner", "retrouver", "porter", "sauter", "preparer", "tomber", "refuser", "regarder", "opposer", "saluer", "sonner", "telephoner", "rencontrer"];
 //	var verbs = ["commencer", "avancer", "divorcer", "se%20fiancer", "lancer", "menacer", "nager", "arranger", "charger", "degager", "diriger", "interroger", "manger", "negliger", "obliger", "plonger", "ranger", "voyager", "corriger", "melanger", "proteger", "changer", "deranger", "exiger", "engager", "juger", "partager", "venger", "envoyer", "balayer", "employer", "ennuyer", "essayer", "essuyer", "nettoyer", "payer", "renvoyer", "acheter", "achever", "amener", "elever", "emmener", "enlever", "geler", "lever", "mener", "peser", "promener", "appeler", "epousseter", "empaqueter", "etinceler", "jeter", "rappeler", "rejeter", "esperer", "accelerer", "ceder", "celebrer", "completer", "considerer", "s'inquieter", "interpreter", "posseder", "preceder", "preferer", "proteger", "repeter", "secher", "suggerer"];
@@ -24,7 +24,8 @@ function init()
 
 	var f = "";
 
-	var verbs = VERBS[0].verbs;
+	//var cat = 2;
+	var verbs = VERBS[cat].verbs;
 
 	console.log(verbs);
 
@@ -54,7 +55,7 @@ function init()
 
 	function next_add()
 	{
-		$("#load").load("https://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++].inf.latinise() + ".html #ch_divSimple", function(response, status, xhr) {
+		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++].inf.latinise() + ".html #ch_divSimple", function(response, status, xhr) {
                         if(status == "error") {
                                 console.log(verbs[vidx-1] + " could not be loaded!");
                                 if(vidx < verbs.length)
@@ -66,6 +67,7 @@ function init()
                         }
 
 			var str = "";
+			var conj = [];
 
                         var self = $("#load").find("#ch_divSimple .responsive-sub")[4];
 			{
@@ -74,19 +76,16 @@ function init()
 					str += "[";
                                         vid = 0;
                                         $(self).find("i").each(function(idx) {
-                                                if(self.outerHTML.slice(0, 43) == "<i style=\"font-style:normal;color:#003EAD\">")
+                                             	if(this.outerHTML.slice(0, 43) == "<i style=\"font-style:normal;color:#003EAD\">")
                                                 {
-                                                        vid++;
+							str += "\"" + this.innerHTML + "\", ";
+                                      			conj.push(this.innerHTML);
+					                vid++;
 
-                                                        if(index == 7)
-                                                        {
-                                                                if(vid == 1)
-                                                                        str += "\"\", \"\", \"\", ";
-                                                                else if(vid == 3)
-                                                                        str += "\"\", \"\", ";
-                                                        }
-                                                        else if(vid == 3 || vid == 6)
+                                                        if(vid == 3 || vid == 6) {
                                                                 str += "\"\", ";
+								conj.push("");
+							}
                                                 }
                                         });
                                         str = str.slice(0, -2) + "], ";
@@ -97,13 +96,25 @@ function init()
                                 }
                         }
 
-			$("#out").html($("#out").html() + str);
+			//console.log(conj);
+			verbs[vidx-1].tenses.push(conj);
+			$("#out").html($("#out").html() + str + "<br>");
 
                         if(vidx < verbs.length)
                                 next_add();
                         else
-                                end();
+                                end_add();
                 });
+	}
+
+	function end_add()
+	{
+		//console.log(verbs);
+
+		VERBS[cat].verbs = verbs;
+		console.log(JSON.stringify(VERBS[cat]) + ", ");
+		if(cat < VERBS.length-1)
+			setTimeout(function() { init(cat + 1); }, 5000);
 	}
 
 	function next()
@@ -209,7 +220,7 @@ function init()
 
 </script>
 
-<body onload="init()">
+<body onload="init(0)">
 
 <div id="out"></div>
 

@@ -544,7 +544,8 @@ var TENSES = [
 	"passé&nbsp;simple",
 	"futur",
 	"impératif",
-	"conditionnel"
+	"conditionnel",
+	"subjonctif"
 ];
 
 window.mobilecheck = function() {
@@ -965,6 +966,7 @@ function init()
                                         });
 
 					var su = ["Je/J'", "Tu", "Il", "Elle", "Nous", "Vous", "Ils", "Elles"];
+					var sus = ["Que je/j'", "Que tu", "Qu'il", "Qu'elle", "Que nous", "Que vous", "Qu'ils", "Qu'elles"];
 					/*var a = [[0, 1, 2, 4, 5, 6],
 						 [0, 1, 2, 3, 4, 5, 6, 7],
 						 [2];
@@ -1017,7 +1019,12 @@ function init()
 							}
 						}*/
 
-                	                	$("#conj-one .verbr span")[0].innerHTML = su[s];
+						// subjonctif
+						if(SETTINGS.tense == 6)
+							$("#conj-one .verbr span")[0].innerHTML = sus[s]
+						else
+                	                		$("#conj-one .verbr span")[0].innerHTML = su[s];
+						
 						$("#conj-one .verbr span input")[0].dataset.subj = s;
 					
 						$("#conj-all").css("display", "none");
@@ -1071,6 +1078,11 @@ function init()
 								$(this).css("display", "none");
 								s++;
 							}
+
+							if(SETTINGS.tense == 6)
+                                                        	$(this).find("span")[0].innerHTML = sus[id];
+                                                	else
+                                                        	$(this).find("span")[0].innerHTML = su[id];
 						});
 
 						if(!s)
@@ -1085,19 +1097,32 @@ function init()
 					else
 					{
 						var sub = SETTINGS.subject;
-						var subname = su[sub];
+
+						var subname;
+						if(SETTINGS.tense == 6)
+							subname = sus[sub];
+						else
+							subname = su[sub];
 
 						if(tverbs[vidx].tenses[SETTINGS.tense][SETTINGS.subject] === "")
 						{
 							if(SETTINGS.subject === 3 && tverbs[vidx].tenses[SETTINGS.tense][2] !== "")
 							{
 								sub = 2;
-								subname = "Elle";
+
+								if(SETTINGS.tense == 6)
+									subname = "Qu'elle";
+								else
+									subname = "Elle";
 							}
 							else if(SETTINGS.subject === 7 && tverbs[vidx].tenses[SETTINGS.tense][6] !== "")  
                                                         {
                                                                 sub = 6;
-                                                                subname = "Elles";
+
+								if(SETTINGS.tense == 6)
+									subname = "Qu'elles";
+								else
+                                                                	subname = "Elles";
                                                         }
 							else
 							{
@@ -1360,6 +1385,7 @@ function searchVerbs()
 					<li data-val="3"><a href="#">Futur</a></li>
 					<li data-val="4"><a href="#">Impératif</a></li>
 					<li data-val="5"><a href="#">Conditionnel</a></li>
+					<li data-val="6"><a href="#">Subjonctif</a></li>
                                 </ul>
                         </div>
                 </li>
