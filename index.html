@@ -1021,9 +1021,9 @@ function init()
 
 						// subjonctif
 						if(SETTINGS.tense == 6)
-							$("#conj-one .verbr span")[0].innerHTML = sus[s]
+							$("#conj-one .verbr span")[0].innerHTML = "<b>" + sus[s] + "</b>";
 						else
-                	                		$("#conj-one .verbr span")[0].innerHTML = su[s];
+                	                		$("#conj-one .verbr span")[0].innerHTML = "<b>" + su[s] + "</b">;
 						
 						$("#conj-one .verbr span input")[0].dataset.subj = s;
 					
@@ -1080,9 +1080,9 @@ function init()
 							}
 
 							if(SETTINGS.tense == 6)
-                                                        	$(this).find("span")[0].innerHTML = sus[id];
+                                                        	$(this).find("span")[0].innerHTML = "<b>" + sus[id] + "</b>";
                                                 	else
-                                                        	$(this).find("span")[0].innerHTML = su[id];
+                                                        	$(this).find("span")[0].innerHTML = "<b>" + su[id] + "</b>";
 						});
 
 						if(!s)
