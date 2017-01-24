@@ -12,17 +12,19 @@ function init()
 //	var verbs = ["parler", "abandonner", "accrocher", "admirer", "aider", "aimer", "allumer", "amuser", "apporter", "arriver", "attacher", "attirer", "attraper", "avaler", "avouer", "briller", "cacher", "chanter", "chercher", "commander", "compter", "danser", "frequenter", "demander", "diner", "echapper", "echouer", "ecouter", "ecraser", "embrasser", "emporter", "emprunter", "enseigner", "entourer", "entrer", "epouser", "etudier", "fermer", "decider", "dessiner", "habiter", "imaginer", "inspirer", "inviter", "jouer", "laver", "louer", "travailler", "traverser", "expliquer", "exprimer", "fouiller", "marcher", "gagner", "garder", "gouter", "organiser", "oser", "oublier", "passer", "irriter", "poser", "laisser", "presenter", "preter", "toucher", "tromper", "utiliser", "visiter", "quitter", "raconter", "monter", "montrer", "rentrer", "rester", "retourner", "retrouver", "porter", "sauter", "preparer", "tomber", "refuser", "regarder", "opposer", "saluer", "sonner", "telephoner", "rencontrer"];
 //	var verbs = ["commencer", "avancer", "divorcer", "se%20fiancer", "lancer", "menacer", "nager", "arranger", "charger", "degager", "diriger", "interroger", "manger", "negliger", "obliger", "plonger", "ranger", "voyager", "corriger", "melanger", "proteger", "changer", "deranger", "exiger", "engager", "juger", "partager", "venger", "envoyer", "balayer", "employer", "ennuyer", "essayer", "essuyer", "nettoyer", "payer", "renvoyer", "acheter", "achever", "amener", "elever", "emmener", "enlever", "geler", "lever", "mener", "peser", "promener", "appeler", "epousseter", "empaqueter", "etinceler", "jeter", "rappeler", "rejeter", "esperer", "accelerer", "ceder", "celebrer", "completer", "considerer", "s'inquieter", "interpreter", "posseder", "preceder", "preferer", "proteger", "repeter", "secher", "suggerer"];
 //	var verbs = ["finir", "accomplir", "agrandir", "applaudir", "batir", "choisir", "garnir", "grossir", "embellir", "envahir", "grandir", "maigrir", "obeir", "punir", "reflechir", "remplir", "reunir", "reussir", "rotir", "rougir", "saisir"];
-	var verbs = ["attendre", "defendre", "descendre", "entendre", "fendre", "fondre", "pendre", "perdre", "rendre", "repandre", "repondre", "tendre", "vendre"];
+//	var verbs = ["attendre", "defendre", "descendre", "entendre", "fendre", "fondre", "pendre", "perdre", "rendre", "repandre", "repondre", "tendre", "vendre"];
 //	var verbs = ["etre", "avoir", "aller", "faire", "mettre", "admettre", "battre", "combattre", "permettre", "promettre", "remettre", "soumettre", "transmettre", "s'asseoir", "plaindre", "atteindre", "craindre", "eteindre", "joindre", "peindre", "rejoindre", "connaitre", "apparaitre", "disparaitre", "naitre", "paraitre", "reconnaitre", "se%20taire", "plaire", "deplaire", "savoir", "vouloir", "pouvoir", "pleuvoir", "dormir", "s'endormir", "mentir", "servir", "sentir", "sortir", "courir", "conclure", "corrompre", "interrompre", "parcourir", "rire", "rompre", "secourir", "sourire", "boire", "devoir", "venir", "appartenir", "contenir", "convenir", "devenir", "maintenir", "obtenir", "parvenir", "redevenir", "retenir", "revenir", "se%20souvenir", "tenir", "voir", "croire", "s'enfuir", "fuir", "prevoir", "revoir", "vivre", "decrire", "ecrire", "s'ensuivre", "poursuivre", "suivre", "survivre", "mourir", "lire", "conduire", "construire", "cuire", "detruire", "elire", "inscrire", "interdire", "nuire", "produire", "reconstruire", "suffire", "traduire", "dire", "prendre", "apprendre", "comprendre", "reprendre", "surprendre", "recevoir", "apercevoir", "concevoir", "decevoir", "ouvrir", "accueillir", "cueillir", "couvrir", "decouvrir", "offrir", "recueillir", "recouvrir", "souffrir", "valoir", "falloir", "acquerir", "conquerir", "vaincre", "convaincre"];
 
 	$("#out").html("var VERBS = [<br>");
 
 	var f = "";
 
-	var vidx = 0;
-//	next();
+	var verbs = VERBS[0].verbs;
 
-	fix();
+	var vidx = 0;
+	next_add();
+
+	//fix();
 
 	function fix()
 	{
@@ -41,6 +43,60 @@ function init()
 
 			console.log(JSON.stringify(d));
 //		});
+	}
+
+	function next_add()
+	{
+		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++] + ".html #ch_divSimple", function(response, status, xhr) {
+                        if(status == "error") {
+                                alert(verbs[vidx-1] + " could not be loaded!");
+                                if(vidx < verbs.length)
+                                        next();
+                                else
+                                        end();
+
+                                return;
+                        }
+
+			var str = "";
+
+                        var self = $("#load").find("#ch_divSimple .responsive-sub")[4];
+			{
+                                if($(self).find("i").length > 1)
+                                {
+					str += "[";
+                                        vid = 0;
+                                        $(self).find("i").each(function(idx) {
+                                                if(self.outerHTML.slice(0, 43) == "<i style=\"font-style:normal;color:#003EAD\">")
+                                                {
+                                                        vid++;
+
+                                                        if(index == 7)
+                                                        {
+                                                                if(vid == 1)
+                                                                        str += "\"\", \"\", \"\", ";
+                                                                else if(vid == 3)
+                                                                        str += "\"\", \"\", ";
+                                                        }
+                                                        else if(vid == 3 || vid == 6)
+                                                                str += "\"\", ";
+                                                }
+                                        });
+                                        str = str.slice(0, -2) + "], ";
+                                }
+                                else
+                                {
+                                        str += "[\"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\"], ";
+                                }
+                        }
+
+			$("#out").html($("#out").html() + str);
+
+                        if(vidx < verbs.length)
+                                next_add();
+                        else
+                                end();
+                });
 	}
 
 	function next()
