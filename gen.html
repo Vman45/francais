@@ -21,6 +21,8 @@ function init()
 
 	var verbs = VERBS[0].verbs;
 
+	console.log(verbs);
+
 	var vidx = 0;
 	next_add();
 
@@ -49,7 +51,7 @@ function init()
 	{
 		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++] + ".html #ch_divSimple", function(response, status, xhr) {
                         if(status == "error") {
-                                alert(verbs[vidx-1] + " could not be loaded!");
+                                console.log(verbs[vidx-1] + " could not be loaded!");
                                 if(vidx < verbs.length)
                                         next();
                                 else
