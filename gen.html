@@ -54,7 +54,7 @@ function init()
 
 	function next_add()
 	{
-		$("#load").load("http://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++].inf.latinise() + ".html #ch_divSimple", function(response, status, xhr) {
+		$("#load").load("https://conjugator.reverso.net/conjugation-french-verb-" + verbs[vidx++].inf.latinise() + ".html #ch_divSimple", function(response, status, xhr) {
                         if(status == "error") {
                                 console.log(verbs[vidx-1] + " could not be loaded!");
                                 if(vidx < verbs.length)
