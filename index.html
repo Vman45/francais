@@ -534,6 +534,7 @@ var SETTINGS = {
 	//random: true,
 	subject: -1,
 	tense: 0,
+	random_tense: false,
 	nverbs: 10,
 	accents: true
 };
@@ -671,7 +672,7 @@ function init()
 				else
 					none = false;
 			});
-	
+
 			if(none)
 				$("#no-results").css("display", "block");
 			else
@@ -691,9 +692,12 @@ function init()
                 	var s = parseInt($("#dropdownMenu1")[0].dataset.val);
                 	var t = parseInt($("#dropdownMenu2")[0].dataset.val);
 
+			SETTINGS.random_tense = false;
+
 			if(t === -1)
                         {
                                 t = Math.floor(Math.random() * (TENSES.length - 0.01));
+				SETTINGS.random_tense = true;
                         }
 			else if(t != SETTINGS.tense)
 			{
@@ -853,7 +857,7 @@ function init()
 			if($("#verbs-wrap").css("display") == "none")
 				beginVerbs();
 		});
-		$("#crestart").off("click").click(beginVerbs);		
+		$("#crestart").off("click").click(beginVerbs);
 
 		var score = 0;
 		var maxscore = 0;
@@ -895,7 +899,7 @@ function init()
                                         $("#conj-form").off("submit");
                                         $("#conj-wrap").stop().animate({ opacity: "0" }, 200, function() {
 						$("#conj-wrap").css("display", "none");
-						
+
 						if(maxscore)
 						{
 							var p = parseInt(100 * score / maxscore);
@@ -934,9 +938,12 @@ function init()
 					}
 
 					function gorest()
-					{				
+					{
+					if(SETTINGS.random_tense)
+						SETTINGS.tense = Math.floor(Math.random() * (TENSES.length - 0.01));
+
 					$(".accents-main").removeClass("temp");
-	
+
 					$(".verbr span input").removeClass("wrong").removeClass("right").val("");
        	                                $("#conj-try").css("display", "none");
 					$("#conj-next").css("display", "none");
@@ -950,7 +957,7 @@ function init()
 					$("#conj-wrap").stop().animate({ opacity: "1" }, 200, function() {
                                         //        console.log("focus");
 						if(SETTINGS.subject == -1)
-						{ 
+						{
 				               		$("#conj-all .verbr span input").each(function() {
 								if($(this.parentNode.parentNode).css("display") != "none")
 								{
@@ -1024,11 +1031,11 @@ function init()
 							$("#conj-one .verbr span")[0].innerHTML = "<b>" + sus[s] + "</b>";
 						else
                 	                		$("#conj-one .verbr span")[0].innerHTML = "<b>" + su[s] + "</b>";
-						
+
 						$("#conj-one .verbr span input")[0].dataset.subj = s;
-					
+
 						$("#conj-all").css("display", "none");
-	
+
 						//$("#conj-allc").css("display", "none");
                 	                        $("#conj-one").css("display", "table");
                         		}
@@ -1115,7 +1122,7 @@ function init()
 								else
 									subname = "Elle";
 							}
-							else if(SETTINGS.subject === 7 && tverbs[vidx].tenses[SETTINGS.tense][6] !== "")  
+							else if(SETTINGS.subject === 7 && tverbs[vidx].tenses[SETTINGS.tense][6] !== "")
                                                         {
                                                                 sub = 6;
 
@@ -1134,7 +1141,7 @@ function init()
 
 						$("#conj-one .verbr span")[0].innerHTML = "<b>" + subname + "</b>";
 						$("#conj-one .verbr span input")[0].dataset.subj = sub;
-				
+
 	                                        $("#conj-all").css("display", "none");
        	                	                //$("#conj-allc").css("display", "none");
        	        	                        $("#conj-one").css("display", "table");
@@ -1207,7 +1214,7 @@ function init()
 	re();
 	$(".top-btn").css("display", "inline-block");
 
-        function re() 
+        function re()
         {
                 if($(document).width() < 400)
                         $(".top-btn .tex").css("display", "none");
@@ -1219,7 +1226,7 @@ function init()
 function searchVerbs()
 {
 	var inp = $(".verb-input input")[0];
-	
+
 	function triggerToggle(a)
 	{
 		var ja = $(a);
@@ -1259,7 +1266,7 @@ function searchVerbs()
                         	else
                                 	$(this).find(".custom-checkbox").removeClass("checked");
 		});
-		
+
 		$("#categories-list .list-group-item").removeClass("disabled");
 	}
 	else
@@ -1270,7 +1277,7 @@ function searchVerbs()
 			if(s.substr(0, ss.length) != ss)
 			{
 				$(this).addClass("disabled");
-			
+
 				/*var p = $(this.parentNode);
 				if(p.find(".list-group-item:vdis").length === p[0].children.length)
 					p.parent().parent().parent().css("display", "none");*/
@@ -1393,11 +1400,11 @@ function searchVerbs()
 			<span class="cell">La&nbsp;fênetre des&nbsp;accents</span>
 			<div class="cell"><div class="custom-checkbox checked" id="accent-check"></div></div>
 		</div>
-	</ul>	
+	</ul>
 </div>
 
 <div id="modal">
-	
+
 </div>
 
 <div class="main">
@@ -1492,7 +1499,7 @@ function searchVerbs()
 				<button class="cb" id="conj-next" style="display:none">Prochain</button>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 
 </body>
