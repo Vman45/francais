@@ -1,2 +1,4 @@
 # francais
-A collection of french stuff!
+A webapp to help learn french verbs!
+
+URL: https://fingoldin.github.io/francais
